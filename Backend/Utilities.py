@@ -1,6 +1,7 @@
 from gensim.models import FastText
 from app import db
-
+import warnings
+warnings.filterwarnings("ignore")
 
 
 def get_similar_items(item):
@@ -15,3 +16,4 @@ def get_similar_items(item):
 
 if __name__ == "__main__":
     print(get_similar_items("Samsung S9"))
+    input()
