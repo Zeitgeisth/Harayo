@@ -37,11 +37,13 @@ public class LostFoundActivity extends AppCompatActivity {
     // class variables
     private static final int REQUEST_CODE = 123;
     private ArrayList<String> mResults = new ArrayList<>();
-
-    Button selectImages;
+    EditText productName, Description;
+    Button selectImages, submit;
     final int ImageCode = 100;
     TextView tvResults;
     RecyclerView imagesList;
+    SendJSON sendJSON;
+    ArrayList<String> imagePaths = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,13 @@ public class LostFoundActivity extends AppCompatActivity {
 
 
         selectImages = findViewById(R.id.SelectImages);
+        productName = findViewById(R.id.NameProduct);
+        Description = findViewById(R.id.Description);
+
+        submit = findViewById(R.id.Submit);
+
         tvResults = findViewById(R.id.testText);
+
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
@@ -76,6 +84,20 @@ public class LostFoundActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String proName = productName.getText().toString();
+                String descrip = Description.getText().toString();
+                String latitude = "27.700769";
+                String longitude = "85.300140";
+                String category = "1";
+
+            sendJSON = new SendJSON(getApplicationContext(), proName, longitude+latitude, descrip, category, imagePaths);
+            sendJSON.sendRequest();
+            }
+        });
     }
 
 
@@ -86,7 +108,7 @@ public class LostFoundActivity extends AppCompatActivity {
                 mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
                 assert mResults != null;
 
-                ArrayList<String> imagePaths = new ArrayList<>();
+
 
                 for (String result : mResults) {
                     imagePaths.add(result);

@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.rock.harayo.LostFoundActivity"
     android:orientation="vertical">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
     <EditText
         android:id="@+id/NameProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name of the contents"
-        android:textAlignment="center"
+        android:drawableLeft="@drawable/ic_web_asset_black_24dp"
+        android:hint="   Items"
+        />
+
+
+    <EditText
+        android:id="@+id/Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_description_black_24dp"
+        android:hint="   Description"
         />
 
     <Button
         android:id="@+id/SelectImages"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Image"
+        android:layout_gravity="center"
+        android:text="add Images"
         />
 
     <TextView
@@ -35,4 +49,15 @@
         android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:id="@+id/Submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Submit"/>
+
+
+    </LinearLayout>
+</ScrollView>
