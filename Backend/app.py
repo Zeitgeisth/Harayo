@@ -11,7 +11,7 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config["DEBUG"] = True
 # app.register_blueprint(account_api)
 # app.register_blueprint(model_app)
 
@@ -92,7 +92,7 @@ def add_lost_items():
     return item_schema.jsonify(new_item)
 
 @app.route ('/add_found_item', methods = ['POST'])
-def add_lost_items():
+def add_found_items():
     name = request.json['name']
     location = request.json['location']
     description = request.json['description']
@@ -109,4 +109,4 @@ def add_lost_items():
 
 #server
 if __name__=='__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
