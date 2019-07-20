@@ -4,69 +4,152 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rock.harayo.HomeActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.rock.harayo.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="#324263">
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
         <ImageButton
-            android:padding="10dp"
-            android:scaleType="fitCenter"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+
             android:background="@drawable/ic_menu_black_24dp"
-            android:layout_weight="1"
-            />
+            android:padding="10dp"
+            android:scaleType="fitCenter" />
 
         <EditText
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:drawableLeft="@drawable/ic_search_black_24dp"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:hint="Search"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
             android:background="#fff"
-            android:gravity="center"
-            android:padding="6dp"
-            android:layout_weight="15"/>
+            android:drawableLeft="@drawable/ic_search_black_24dp"
+
+            android:hint="Search"
+            android:padding="6dp" />
 
         <ImageButton
 
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/ic_more_vert_black_24dp"
-            android:layout_weight="1"/>
+            android:layout_marginTop="10dp"
+            android:background="@drawable/ic_more_vert_black_24dp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
-        android:background="#324263">
-        <ImageButton
-            android:background="@drawable/ic_home_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-        <ImageButton
-            android:background="@drawable/ic_notifications_black_24dp"
-            android:backgroundTint="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            />
-        <ImageButton
-            android:background="@drawable/ic_account_box_black_24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+        android:padding="10dp">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+
+                android:background="@drawable/ic_home_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+
+                android:background="@drawable/ic_home_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+
+                android:background="@drawable/ic_home_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+
+                android:background="@drawable/ic_home_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:background="@color/colorAccent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="20dp"
+        android:textColor="@color/white"
+        android:text="  Add lost item   " />
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="20dp"
+        android:text=" Add found item " />
+
+
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trending Items"/>
     </LinearLayout>
 </LinearLayout>
