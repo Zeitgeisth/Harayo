@@ -77,18 +77,22 @@ items_schema = ItemSchema (many =True, strict = True)
 
 def get_similar_items(item, location):
     model = FastText.load("lf.model")
-    similar = model.most_similar(item, topn = 5)
+    if item in model.wv.vocab:
+        similar = [(item,1.0)]
+    else:    
+        similar = model.most_similar(item, topn = 5)
+        item = [item]
+        model.build_vocab([item], update=True)
+        model.train([item], total_examples=len([item]), epochs=model.epochs)
     items = []
     for it, _ in similar:
         items.append(it)
     items = tuple(items)
-    item = [item]
-    model.build_vocab([item], update=True)
+    
     #print(model.wv.vocab)
     result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location={1} AND catagory=2".format(items, location))
     result_data = [{column: value for column, value in row.items()} for row in result ]
     print(result_data)
-    model.train([item], total_examples=len([item]), epochs=model.epochs)
     model.save('lf.model')
     return result_data
 
@@ -123,7 +127,7 @@ def add_lost_items():
     existing_item= get_similar_items(name,location)
     print(existing_item)
 
-    new_item = Item(name, location,description, int(catagory), image, int(status), int(user))
+    
     image_path = os.path.join ('images/'+ filename)
     new_item = Item(name, location,description, int(catagory), image_path, int(status), int(user))
     db.session.add(new_item)
