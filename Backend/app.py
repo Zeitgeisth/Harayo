@@ -108,16 +108,18 @@ def found_items():
 @app.route ('/add_lost_item', methods = ['POST'])
 def add_lost_items():
     #print(request.json)
-    images = request.json['images']
-    filename = 'pic'+str(time.time())+ '.jpg'
-    with open(filename,'wb') as f:
-        f.write(base64.b64decode(images))
-
+    try:
+        images = request.json['images']
+        filename = 'pic'+str(time.time())+ '.jpg'
+        with open(filename,'wb') as f:
+            f.write(base64.b64decode(images))
+    except KeyError:
+        print("No Image is Passed")
 
     name = request.json['name']
     location = request.json['location']
     description = request.json['description']
-    catagory = request.json['category']
+    catagory = request.json['catagory']
     status = request.json ['status']
     user = request.json ['user']
     existing_item= get_similar_items(name,location)
@@ -140,11 +142,12 @@ def add_found_items():
     image = request.json['image']
     status = request.json ['status']
     user = request.json ['user']
-    
+    existing_item= get_similar_items(name,location)
     new_item = Item(name, location,description, catagory, image, status, user)
     db.session.add(new_item)
     db.session.commit()
-    return item_schema.jsonify(new_item)
+    return existing_item
+    #return item_schema.jsonify(new_item)
 
 @app.route('/lost_item_found/<id>', methods = ['PUT'])
 def lost_item_found(id):
