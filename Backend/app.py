@@ -122,8 +122,6 @@ def add_lost_items():
     user = request.json ['user']
     existing_item= get_similar_items(name,location)
     print(existing_item)
-
-    new_item = Item(name, location,description, int(catagory), image, int(status), int(user))
     image_path = os.path.join ('images/'+ filename)
     new_item = Item(name, location,description, int(catagory), image_path, int(status), int(user))
     db.session.add(new_item)
