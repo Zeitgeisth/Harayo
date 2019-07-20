@@ -15,4 +15,24 @@
         android:hint="Name of the contents"
         android:textAlignment="center"
         />
+
+    <Button
+        android:id="@+id/SelectImages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Image"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/testText"/>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/imagesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

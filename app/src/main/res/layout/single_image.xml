@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:scaleType="fitXY"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:id="@+id/singleImage"
+        />
+
+    <View android:layout_height="match_parent"
+        android:layout_width="10dp"
+        app:layout_constraintLeft_toRightOf="@id/singleImage"/>
+
+
+</android.support.constraint.ConstraintLayout>
