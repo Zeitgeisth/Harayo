@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -36,20 +37,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LostFoundActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class LostFoundActivity extends AppCompatActivity{
 
     // class variables
     private static final int REQUEST_CODE = 123;
     private ArrayList<String> mResults = new ArrayList<>();
     EditText productName, Description;
-    Button selectImages, submit;
+    Button selectImages, submit,mapBtn;
     final int ImageCode = 100;
-    GoogleMap map;
-    MapView mapView;
     TextView tvResults;
     RecyclerView imagesList;
     SendJSON sendJSON;
     ArrayList<String> imagePaths = new ArrayList<>();
+    String lat="", lng="";
+
+
+    private static final int SECOND_ACTIVITY_REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +67,8 @@ public class LostFoundActivity extends AppCompatActivity implements OnMapReadyCa
 
         submit = findViewById(R.id.Submit);
 
-        tvResults = findViewById(R.id.testText);
+        mapBtn = findViewById(R.id.mapBtn);
 
-        mapView = (MapView) findViewById(R.id.mapview);
-        mapView.onCreate(savedInstanceState);
-
-
-        mapView.getMapAsync(this);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -97,6 +95,13 @@ public class LostFoundActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult((new Intent(getApplicationContext(), MapsActivity.class)),SECOND_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,65 +124,29 @@ public class LostFoundActivity extends AppCompatActivity implements OnMapReadyCa
             if (resultCode == RESULT_OK) {
                 mResults = data.getStringArrayListExtra(SelectorSettings.SELECTOR_RESULTS);
                 assert mResults != null;
-
-
-
                 for (String result : mResults) {
                     imagePaths.add(result);
 
                 }
-
                 ImagesAdapter adapter = new ImagesAdapter(imagePaths, getApplicationContext());
                 imagesList.swapAdapter(adapter, false);
 //                tvResults.setText(sb.toString());
             }
         }
+
+        // Check that it is the SecondActivity with an OK result
+        if (requestCode == SECOND_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                // Get String data from Intent
+
+                lat = data.getStringExtra("lat");
+                lng = data.getStringExtra("long");
+                // Set text view with string
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.setMyLocationEnabled(true);
-       /*
-       //in old Api Needs to call MapsInitializer before doing any CameraUpdateFactory call
-        try {
-            MapsInitializer.initialize(this.getActivity());
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-       */
-
-        // Updates the location and zoom of the MapView
-        /*CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
-        map.animateCamera(cameraUpdate);*/
-    }
-
-
-    @Override
-    public void onResume() {
-        mapView.onResume();
-        super.onResume();
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
 }

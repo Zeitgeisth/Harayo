@@ -44,19 +44,24 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.imageViewH
     @Override
     public void onBindViewHolder(@NonNull imageViewHolder holder, int position) {
 
-        File imgFile = new  File(imageList.get(position));
 
-        if(imgFile.exists()){
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            holder.imageView.setImageBitmap(myBitmap);
 
+        if (imageList.size()==0){
+            holder.imageView.setImageResource(R.drawable.ic_image_black_24dp);
+        } else {
+            File imgFile = new  File(imageList.get(position));
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                holder.imageView.setImageBitmap(myBitmap);
+
+            }
         }
-
     }
 
     @Override
     public int getItemCount() {
-        return this.imageList.size();
+
+        return imageList.size()==0?5: this.imageList.size();
     }
 
 
