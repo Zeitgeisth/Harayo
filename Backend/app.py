@@ -6,6 +6,10 @@ import os
 from gensim.models import FastText
 import warnings
 warnings.filterwarnings("ignore")
+import base64
+import time
+
+
 # from api import account_api
 # from models import model_app
 # from models import User, UserSchema, Item,ItemSchema
@@ -24,23 +28,26 @@ app.config["DEBUG"] = True
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column (db.String(80), nullable = False)
     password = db.Column (db.String(80), nullable = False)
-    location = db.Column(db.LargeBinary, nullable = False)
+    location = db.Column(db.String(80), nullable = False)
+    phone = db.Column (db.String(15), nullable = False)
     def __init__(self, name, password, location):
         self.name = name
         self.password = password
         self.location = location
+        self.phone = phone
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80))
-    location = db.Column (db.LargeBinary, nullable =True)
+    location = db.Column (db.String(100), nullable =True)
     description = db.Column (db.String(100))
     catagory= db.Column (db.Integer)
-    image = db.Column(db.LargeBinary, nullable = True) 
+    image = db.Column(db.String(100), nullable = True) 
     status = db.Column(db.Integer)
     user = db.Column (db.Integer, db.ForeignKey('user.id'),nullable = False)
     def __init__(self,name,location, description,catagory,image,status,user):
@@ -88,32 +95,43 @@ def get_similar_items(item, location):
 
 @app.route('/get_lost_items', methods = ['GET'])
 def lost_items():
-    lost_items = Item.query.filter_by(status=1)
+    lost_items = Item.query.filter_by(status=1,catagory = 1)
     result = items_schema.dump(lost_items)
     return jsonify(result.data)
 @app.route('/get_found_items',methods = ['GET'])
 def found_items():
-    found_items = Item.query.filter_by(found_items)
+    found_items = Item.query.filter_by(status= 1, catagory = 2)
     result = items_schema.dump (found_items)
     return jsonify(result.data)
 
 
 @app.route ('/add_lost_item', methods = ['POST'])
 def add_lost_items():
+    #print(request.json)
+    images = request.json['images']
+    filename = 'pic'+str(time.time())+ '.jpg'
+    with open(filename,'wb') as f:
+        f.write(base64.b64decode(images))
+
+
     name = request.json['name']
     location = request.json['location']
     description = request.json['description']
-    catagory = request.json['catagory']
-    image = request.json['image']
+    catagory = request.json['category']
     status = request.json ['status']
     user = request.json ['user']
     existing_item= get_similar_items(name,location)
     print(existing_item)
 
     new_item = Item(name, location,description, int(catagory), image, int(status), int(user))
+    image_path = os.path.join ('images/'+ filename)
+    new_item = Item(name, location,description, int(catagory), image_path, int(status), int(user))
     db.session.add(new_item)
     db.session.commit()
     return existing_item
+
+
+
 
 @app.route ('/add_found_item', methods = ['POST'])
 def add_found_items():
@@ -130,6 +148,10 @@ def add_found_items():
     db.session.commit()
     return item_schema.jsonify(new_item)
 
+@app.route('/lost_item_found/<id>', methods = ['PUT'])
+def lost_item_found(id):
+    item = Item.query.get (id)
+    db.session.delete(item)
 
 #server
 if __name__=='__main__':
