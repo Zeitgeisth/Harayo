@@ -13,21 +13,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by User on 7/20/2019.
- */
 
 public class SendJSON {
 
@@ -37,6 +35,11 @@ public class SendJSON {
     public ArrayList<String> imagePaths;
     public Context context;
     HashMap<String, String> JsonData = new HashMap<>();
+    final ArrayList<HashMap> list = new ArrayList<>();
+
+    public ArrayList<HashMap> getList(){
+        return list;
+    }
 
     public SendJSON(Context context){
 
@@ -95,9 +98,6 @@ public class SendJSON {
             }
         }) {
 
-            /**
-             * Passing some request headers
-             * */
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
@@ -115,32 +115,37 @@ public class SendJSON {
         queue.add(jsonObjReq);
     }
 
-    void getJSON(final VolleyCallback callback){
+    void getJSON(final Context context, final VolleyCallback callback){
         final String url = "http://10.16.1.167:5000/get_lost_items";
 
 
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
+        JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>()
                 {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            String name  = response.getString("name");
-                            String location = response.getString("location");
-                            String description = response.getString("description");
-                            String category = response.getString("category");
-                            String images = response.getString("images");
-                            String user = response.getString("user");
-                            String status = response.getString("status");
-                            JsonData = new HashMap<>();
-                            JsonData.put("name", name);
-                            JsonData.put("location", location);
-                            JsonData.put("description", description);
-                            JsonData.put("category", category);
-                            JsonData.put("images", images);
-                            JsonData.put("user", user);
-                            JsonData.put("status", status);
-                            callback.onSuccess(JsonData);
+                            for(int i = 0; i < response.length(); i++){
+                                JSONObject object = response.getJSONObject(i);
+                                String name  = object.getString("name");
+                                String location = object.getString("location");
+                                String description = object.getString("description");
+                                String category = object.getString("catagory");
+                                String images = object.getString("image");
+                                String user = object.getString("user");
+                                String status = object.getString("status");
+                                JsonData = new HashMap<>();
+                                JsonData.put("name", name);
+                                JsonData.put("location", location);
+                                JsonData.put("description", description);
+                                JsonData.put("category", category);
+                                JsonData.put("images", images);
+                                JsonData.put("user", user);
+                                JsonData.put("status", status);
+
+                                list.add(JsonData);
+                            }
+                            callback.onSuccess(true);
 
 
                         } catch (JSONException e) {
@@ -165,7 +170,7 @@ public class SendJSON {
     }
 
     public interface VolleyCallback{
-        void onSuccess(HashMap<String,String> result);
+        void onSuccess(Boolean success);
     }
 
 
