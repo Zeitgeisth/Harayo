@@ -12,18 +12,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        lost = findViewById(R.id.LOST);
-        found = findViewById(R.id.FOUND);
+//        lost = findViewById(R.id.LOST);
+//        found = findViewById(R.id.FOUND);
 
 
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.LOST){
-
-        }else if(view.getId() == R.id.FOUND){
-
-        }
+//        if(view.getId() == R.id.LOST){
+//
+//        }else if(view.getId() == R.id.FOUND){
+//
+//        }
     }
 }
