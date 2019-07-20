@@ -22,6 +22,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.zfdang.multiple_images_selector.ImagesSelectorActivity;
 import com.zfdang.multiple_images_selector.SelectorSettings;
 
@@ -32,7 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LostFoundActivity extends AppCompatActivity {
+public class LostFoundActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     // class variables
     private static final int REQUEST_CODE = 123;
@@ -40,6 +44,8 @@ public class LostFoundActivity extends AppCompatActivity {
     EditText productName, Description;
     Button selectImages, submit;
     final int ImageCode = 100;
+    GoogleMap map;
+    MapView mapView;
     TextView tvResults;
     RecyclerView imagesList;
     SendJSON sendJSON;
@@ -59,6 +65,12 @@ public class LostFoundActivity extends AppCompatActivity {
         submit = findViewById(R.id.Submit);
 
         tvResults = findViewById(R.id.testText);
+
+        mapView = (MapView) findViewById(R.id.mapview);
+        mapView.onCreate(savedInstanceState);
+
+
+        mapView.getMapAsync(this);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -124,5 +136,48 @@ public class LostFoundActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+        map.setMyLocationEnabled(true);
+       /*
+       //in old Api Needs to call MapsInitializer before doing any CameraUpdateFactory call
+        try {
+            MapsInitializer.initialize(this.getActivity());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+       */
 
+        // Updates the location and zoom of the MapView
+        /*CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10);
+        map.animateCamera(cameraUpdate);*/
+    }
+
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 }
