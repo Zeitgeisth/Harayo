@@ -5,6 +5,17 @@
 Harayo/lost and found is an android application which acts as a forum for help-posting. It mainly includes posts for lost items like citizenship,
 smartphones or other important documents.
 
+# Demo video
+
+https://www.youtube.com/watch?v=mSfkHOMKilw&feature=share&fbclid=IwAR0NHXKL3V5LLRxM11twThv8-4wxmhp9shF4cWQlBGkLYlWd0enbjo05dB8
+
+# Screenshots
+
+![alt text](https://raw.githubusercontent.com/Zeitgeisth/Harayo/master/2.jpg)
+![alt text](https://raw.githubusercontent.com/Zeitgeisth/Harayo/master/3.jpg)
+![alt text](https://raw.githubusercontent.com/Zeitgeisth/Harayo/master/4.jpg)
+![alt text](https://raw.githubusercontent.com/Zeitgeisth/Harayo/master/5.jpg)
+
 ## Getting Started
 
 Frontend -> Master branch === Build.gradle contains all the requirements for the application.
