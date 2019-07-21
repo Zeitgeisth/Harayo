@@ -92,9 +92,9 @@ def get_similar_items(item, location):
     items = tuple(items)
     #print(model.wv.vocab)
     if len(items) == 1:
-        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN ('{0}') AND location='{1}' AND catagory=2".format(items[0], location))
+        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN ('{0}') AND location='{1}' AND catagory='found'".format(items[0], location))
     else:
-        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location={1} AND catagory=2".format(items, location))
+        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location='{1}' AND catagory='found'".format(items, location))
     result_data = [{column: value for column, value in row.items()} for row in result ]
     print(result_data)
     model.save('lf.model')
@@ -103,14 +103,14 @@ def get_similar_items(item, location):
 
 @app.route('/get_lost_items', methods = ['GET'])
 def lost_items():
-    lost_items = Item.query.filter_by(status=1,catagory = 'Lost')
+    lost_items = Item.query.all()
     result = items_schema.dump(lost_items)
-
+    print(result.data)
     return jsonify(result.data)
 
 @app.route('/get_found_items',methods = ['GET'])
 def found_items():
-    found_items = Item.query.filter_by(status= 1, catagory = 2)
+    found_items = Item.query.filter_by(status= 1, catagory = 'found')
     result = items_schema.dump (found_items)
     return jsonify(result.data)
 
