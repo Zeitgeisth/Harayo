@@ -116,8 +116,10 @@ def add_lost_items():
         filename = 'pic'+str(time.time())+ '.jpg'
         with open(filename,'wb') as f:
             f.write(base64.b64decode(images))
+        image_path = os.path.join ('images/'+ filename)
     except KeyError:
         print("No Image is Passed")
+        image_path = os.path.join('images/')
 
     name = request.json['name']
     location = request.json['location']
@@ -127,13 +129,12 @@ def add_lost_items():
     user = request.json ['user']
     existing_item= get_similar_items(name,location)
     print(existing_item)
-
     
-    image_path = os.path.join ('images/'+ filename)
+   
     new_item = Item(name, location,description, int(catagory), image_path, int(status), int(user))
     db.session.add(new_item)
     db.session.commit()
-    return existing_item
+    return item_schema.jsonify(new_item)
 
 
 
