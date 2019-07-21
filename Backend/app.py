@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import os
-
+from flask import send_from_directory
 from gensim.models import FastText
 import warnings
 warnings.filterwarnings("ignore")
@@ -16,6 +16,7 @@ import time
 
 #init app here
 app = Flask(__name__)
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir,'db.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -46,10 +47,10 @@ class Item(db.Model):
     name = db.Column(db.String(80))
     location = db.Column (db.String(100), nullable =True)
     description = db.Column (db.String(100))
-    catagory= db.Column (db.Integer)
+    catagory= db.Column (db.String(100))
     image = db.Column(db.String(100), nullable = True) 
-    status = db.Column(db.Integer)
-    user = db.Column (db.Integer, db.ForeignKey('user.id'),nullable = False)
+    status = db.Column(db.String(100))
+    user = db.Column (db.String(100), db.ForeignKey('user.id'),nullable = False)
     def __init__(self,name,location, description,catagory,image,status,user):
         self.name = name
         self.location = location
@@ -102,9 +103,11 @@ def get_similar_items(item, location):
 
 @app.route('/get_lost_items', methods = ['GET'])
 def lost_items():
-    lost_items = Item.query.filter_by(status=1,catagory = 1)
+    lost_items = Item.query.filter_by(status=1,catagory = 'Lost')
     result = items_schema.dump(lost_items)
+
     return jsonify(result.data)
+
 @app.route('/get_found_items',methods = ['GET'])
 def found_items():
     found_items = Item.query.filter_by(status= 1, catagory = 2)
@@ -123,23 +126,34 @@ def add_lost_items():
         image_path = os.path.join ('images/'+ filename)
     except KeyError:
         print("No Image is Passed")
-        image_path = os.path.join('images/')
+        image_path = os.path.join('images/'+filename)
 
     name = request.json['name']
     location = request.json['location']
     description = request.json['description']
-    catagory = request.json['catagory']
+    catagory = request.json['category']
     status = request.json ['status']
     user = request.json ['user']
-    existing_item= get_similar_items(name,location)
-    print(existing_item)
+    #existing_item= get_similar_items(name,location)
+    #print(existing_item)
     
    
-    new_item = Item(name, location,description, int(catagory), image_path, int(status), int(user))
+    new_item = Item(name, location,description,catagory, filename, status, user)
     db.session.add(new_item)
     db.session.commit()
-    return item_schema.jsonify(new_item)
+    return item_schema.jsonify(new_item) 
 
+@app.route('/<path:filename>')
+def sdir(filename):
+    try:
+        
+        return send_from_directory(
+            '',
+            filename
+        )
+    except Exception as e:
+        print (e)
+        return ''
 
 
 
@@ -156,6 +170,7 @@ def add_found_items():
     new_item = Item(name, location,description, catagory, image, status, user)
     db.session.add(new_item)
     db.session.commit()
+    print(existing_item)
     return existing_item
     #return item_schema.jsonify(new_item)
 
