@@ -87,9 +87,13 @@ def get_similar_items(item, location):
     items = []
     for it, _ in similar:
         items.append(it)
+    
     items = tuple(items)
     #print(model.wv.vocab)
-    result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location={1} AND catagory=2".format(items, location))
+    if len(items) == 1:
+        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN ('{0}') AND location='{1}' AND catagory=2".format(items[0], location))
+    else:
+        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location={1} AND catagory=2".format(items, location))
     result_data = [{column: value for column, value in row.items()} for row in result ]
     print(result_data)
     model.save('lf.model')
