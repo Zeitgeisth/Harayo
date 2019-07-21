@@ -43,6 +43,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         itemsView.setAdapter(adapter);
         getItems();
 
+
+        findViewById(R.id.notification_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+            }
+        });
+
         Intent serviceIntent = new Intent(getApplicationContext(), ourService.class);
         startService(serviceIntent);
     }

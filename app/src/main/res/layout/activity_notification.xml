@@ -6,4 +6,54 @@
     android:layout_height="match_parent"
     tools:context="com.example.rock.harayo.NotificationActivity">
 
+    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:id="@+id/noti_card"
+
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="5dp"
+        android:layout_marginTop="10dp"
+        >
+
+
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:src="@mipmap/item"
+                    android:layout_width="150dp"
+                    android:scaleType="fitXY"
+                    android:layout_height="75dp" />
+                <TextView
+                    android:textColor="@color/black"
+                    android:id="@+id/noti_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Your item has been found"
+                    android:padding="10dp" />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+
 </android.support.constraint.ConstraintLayout>
