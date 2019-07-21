@@ -46,10 +46,10 @@ class Item(db.Model):
     name = db.Column(db.String(80))
     location = db.Column (db.String(100), nullable =True)
     description = db.Column (db.String(100))
-    catagory= db.Column (db.Integer)
+    catagory= db.Column (db.String(80))
     image = db.Column(db.String(100), nullable = True) 
-    status = db.Column(db.Integer)
-    user = db.Column (db.Integer, db.ForeignKey('user.id'),nullable = False)
+    status = db.Column(db.String(80))
+    user = db.Column (db.String(80), db.ForeignKey('user.id'),nullable = False)
     def __init__(self,name,location, description,catagory,image,status,user):
         self.name = name
         self.location = location
@@ -91,9 +91,9 @@ def get_similar_items(item, location):
     items = tuple(items)
     #print(model.wv.vocab)
     if len(items) == 1:
-        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN ('{0}') AND location='{1}' AND catagory=2".format(items[0], location))
+        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN ('{0}') AND location='{1}' AND catagory='found'".format(items[0], location))
     else:
-        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location={1} AND catagory=2".format(items, location))
+        result = db.engine.execute("SELECT name, location FROM Item WHERE name IN {0} AND location='{1}' AND catagory='found'".format(items, location))
     result_data = [{column: value for column, value in row.items()} for row in result ]
     print(result_data)
     model.save('lf.model')
@@ -102,12 +102,13 @@ def get_similar_items(item, location):
 
 @app.route('/get_lost_items', methods = ['GET'])
 def lost_items():
-    lost_items = Item.query.filter_by(status=1,catagory = 1)
+    lost_items = Item.query.all()
     result = items_schema.dump(lost_items)
+    print(result.data)
     return jsonify(result.data)
 @app.route('/get_found_items',methods = ['GET'])
 def found_items():
-    found_items = Item.query.filter_by(status= 1, catagory = 2)
+    found_items = Item.query.filter_by(status= 1, catagory = 'found')
     result = items_schema.dump (found_items)
     return jsonify(result.data)
 
@@ -128,14 +129,14 @@ def add_lost_items():
     name = request.json['name']
     location = request.json['location']
     description = request.json['description']
-    catagory = request.json['catagory']
+    catagory = request.json['category']
     status = request.json ['status']
     user = request.json ['user']
     existing_item= get_similar_items(name,location)
     print(existing_item)
     
    
-    new_item = Item(name, location,description, int(catagory), image_path, int(status), int(user))
+    new_item = Item(name, location,description, catagory, image_path, status, user)
     db.session.add(new_item)
     db.session.commit()
     return item_schema.jsonify(new_item)
