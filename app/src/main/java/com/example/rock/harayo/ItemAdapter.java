@@ -1,6 +1,8 @@
 package com.example.rock.harayo;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +13,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by User on 7/21/2019.
@@ -38,8 +43,17 @@ public class ItemAdapter extends  RecyclerView.Adapter<ItemAdapter.itemViewHolde
     public void onBindViewHolder(@NonNull itemViewHolder holder, int position) {
         Item current = itemList.get(position);
         holder.name.setText(current.name);
-        holder.status.setText(current.status);
-        holder.call.setText(current.call);
+        Geocoder geocoder = new Geocoder(context, Locale.ENGLISH);
+        String[] locList = current.location.split(",");
+        List<Address> addresses = null;
+//        try {
+//            addresses = geocoder.getFromLocation(Double.valueOf(locList[0]), Double.valueOf(locList[1]), 1);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        String cityName = addresses.get(0).getAddressLine(0);
+        holder.status.setText(current.location);
+//        holder.call.setText(current.call);
 
         Glide.with(context).load(Constants.BASE_URL + current.imageUrl).into(holder.imageView);
     }

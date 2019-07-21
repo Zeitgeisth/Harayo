@@ -7,5 +7,5 @@ package com.example.rock.harayo;
 public class Item {
 
     String name,status,call;
-    String imageUrl;
+    String imageUrl, location, category;
 }

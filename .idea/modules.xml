@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Harayo.iml" filepath="$PROJECT_DIR$/Harayo.iml" />
       <module fileurl="file://F:\Everest\HarayoMainn\Harayo.iml" filepath="F:\Everest\HarayoMainn\Harayo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HarayoMainn.iml" filepath="$PROJECT_DIR$/HarayoMainn.iml" />
       <module fileurl="file://C:\Users\rock\AndroidStudioProjects\Harayo\.idea\HarayoMainn.iml" filepath="C:\Users\rock\AndroidStudioProjects\Harayo\.idea\HarayoMainn.iml" />
       <module fileurl="file://C:\Users\rock\AndroidStudioProjects\Harayo\HarayoMainn.iml" filepath="C:\Users\rock\AndroidStudioProjects\Harayo\HarayoMainn.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

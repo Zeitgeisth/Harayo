@@ -109,9 +109,9 @@ public class LostFoundActivity extends AppCompatActivity{
                 String descrip = Description.getText().toString();
                 String latitude = "27.700769";
                 String longitude = "85.300140";
-                String category = "1";
+                String category = "Lost";
 
-            sendJSON = new SendJSON(getApplicationContext(), proName, longitude+latitude, descrip, category, imagePaths);
+            sendJSON = new SendJSON(getApplicationContext(), proName, longitude+","+latitude, descrip, category, imagePaths);
             sendJSON.sendRequest();
             }
         });

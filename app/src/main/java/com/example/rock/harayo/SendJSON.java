@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class SendJSON {
 
-    public static final String URL = "http://10.16.1.167:5000/add_lost_item";
+    public static final String URL = Constants.BASE_URL+"add_lost_item";
     RequestQueue queue;
     public String name, location, description, category, status,user;
     public ArrayList<String> imagePaths;
@@ -116,7 +116,7 @@ public class SendJSON {
     }
 
     void getJSON(final Context context, final VolleyCallback callback){
-        final String url = "http://10.16.1.167:5000/get_lost_items";
+        final String url = Constants.BASE_URL+"get_lost_items";
 
 
         JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
